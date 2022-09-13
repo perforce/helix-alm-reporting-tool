@@ -1,0 +1,4 @@
+/reporting-tool/build/
+/build/
+/.gradle/
+**/.MySCMServerInfo

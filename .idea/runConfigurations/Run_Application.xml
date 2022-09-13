@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Application" type="Application" factoryName="Application" show_console_on_std_err="true" show_console_on_std_out="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="11 (2)" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.perforce.halm.reportingtool.App" />
+    <module name="reporting-tool.reporting-tool.main" />
+    <option name="PROGRAM_PARAMETERS" value="--help" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Suite" timestamp="2022-05-14T04:36:20" tests="1" time="0.123" failures="0">
+  <testcase name="Login" uniqueName="login_validation" tags="TC-1,TC-2,TC-3" device="laptop" manufacturer="Dell" model="G15"
+            os="Windows" osVersion="10" browser="Chrome" browserVersion="70" startDate="2022-05-14T04:36:20" time="0.123"
+            externalURL="https://mybuilder/jenkins" classname="login" parameter="xyz">
+  </testcase>
+</testsuite>
