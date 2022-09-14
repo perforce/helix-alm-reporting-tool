@@ -1,6 +1,7 @@
 ![Support](https://img.shields.io/badge/Support-Community-yellow.svg)
 # Helix ALM Reporting Tool
 
+## Overview
 The Helix ALM Reporting Tool can be used to submit automated test results to Helix ALM from any tool without writing your own JUnit/xUnit parser.
 
 The reporting tool retrieves report files, parses them, and converts their data into objects that can be sent to the submit build call on the Helix ALM REST API. The tool uses the [halm-rest-client-api]() component to handle interactions with the REST API.
@@ -17,6 +18,13 @@ Maintained by [Perforce Software](https://www.perforce.com/).
 
 ## License
 [MIT License](LICENSE.txt)
+
+# Support
+The reporting-tool is a community supported project and is not officially supported by Perforce.
+
+Pull requests and issues are the responsibility of the project's moderator(s); this may be a vetted individual or team
+with members outside of the Perforce organization. Perforce does not officially support these projects, therefore all
+issues should be reported and managed via GitHub (not via Perforce's standard support process).
 
 # Using or building the reporting tool
 
@@ -35,10 +43,3 @@ We follow semantic versioning for Major - Minor - Patch
 Set any required variables in `~/.gradle/gradle.properties`. Variables can also be specified via the command line:
 
 `./gradlew.bat build -PartifactoryUsername=username -PartifactoryPassword=password`
-
-## Support
-The reporting-tool is a community supported project and is not officially supported by Perforce.
-
-Pull requests and issues are the responsibility of the project's moderator(s); this may be a vetted individual or team
-with members outside of the Perforce organization. Perforce does not officially support these projects, therefore all
-issues should be reported and managed via GitHub (not via Perforce's standard support process).
