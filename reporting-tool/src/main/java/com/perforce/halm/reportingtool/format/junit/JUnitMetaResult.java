@@ -28,7 +28,11 @@ package com.perforce.halm.reportingtool.format.junit;
 
 import com.perforce.halm.reportingtool.format.IMetaResult;
 import com.perforce.halm.reportingtool.format.UniqueNameTracker;
-import com.perforce.halm.reportingtool.format.junit.parser.*;
+import com.perforce.halm.reportingtool.format.junit.parser.JUnitTestCase;
+import com.perforce.halm.reportingtool.format.junit.parser.JUnitTestCaseError;
+import com.perforce.halm.reportingtool.format.junit.parser.JUnitTestCaseFailure;
+import com.perforce.halm.reportingtool.format.junit.parser.JUnitTestCaseSkipped;
+import com.perforce.halm.reportingtool.format.junit.parser.JUnitTestSuite;
 import com.perforce.halm.rest.types.IDLabelPair;
 import com.perforce.halm.rest.types.NameValuePair;
 import com.perforce.halm.rest.types.automation.build.AutomationResult;
@@ -56,19 +60,23 @@ public class JUnitMetaResult implements IMetaResult {
      * @param testSuite The test suite the test case belongs too
      */
     public JUnitMetaResult(final JUnitTestCase testCase,  final JUnitTestSuite testSuite) {
-        this.setTestCase(testCase);
-        this.setTestSuite(testSuite);
+        this.testCase = testCase;
+        this.testSuite = testSuite;
     }
 
     /**
      * @param testCase The test case we need to format
      */
-    public void setTestCase(JUnitTestCase testCase) { this.testCase = testCase; }
+    public void setTestCase(JUnitTestCase testCase) {
+        this.testCase = testCase;
+    }
 
     /**
      * @param testSuite The test suite the test case belongs too
      */
-    public void setTestSuite(JUnitTestSuite testSuite) { this.testSuite = testSuite; }
+    public void setTestSuite(JUnitTestSuite testSuite) {
+        this.testSuite = testSuite;
+    }
 
     /**
      * Formats a result object from the JUnitTestCase specified
@@ -127,11 +135,14 @@ public class JUnitMetaResult implements IMetaResult {
     protected void setResultStatusFromTestCase(AutomationResult result) {
         if (this.testCase.getError() != null) {
             this.setErrorResultStatus(result, this.testCase.getError());
-        } else if (this.testCase.getFailure() != null) {
+        }
+        else if (this.testCase.getFailure() != null) {
             this.setFailureResultStatus(result, this.testCase.getFailure());
-        } else if (this.testCase.getSkipped() != null) {
+        }
+        else if (this.testCase.getSkipped() != null) {
             this.setSkippedResultStatus(result, this.testCase.getSkipped());
-        } else {
+        }
+        else {
             result.setStatus(new IDLabelPair(AutomationResultStatus.PASSED.id(), ""));
         }
     }
@@ -147,7 +158,8 @@ public class JUnitMetaResult implements IMetaResult {
         if (error.getMessage() != null && !error.getMessage().isEmpty()) {
             if (result.getErrorMessage() == null || result.getErrorMessage().isEmpty()) {
                 result.setErrorMessage(error.getMessage());
-            } else {
+            }
+            else {
                 result.addProperty(new NameValuePair("errorMessage", error.getMessage()));
             }
         }
@@ -170,7 +182,8 @@ public class JUnitMetaResult implements IMetaResult {
         if (failure.getMessage() != null && !failure.getMessage().isEmpty()) {
             if (result.getErrorMessage() == null || result.getErrorMessage().isEmpty()) {
                 result.setErrorMessage(failure.getMessage());
-            } else {
+            }
+            else {
                 result.addProperty(new NameValuePair("failureMessage", failure.getMessage()));
             }
         }
@@ -193,7 +206,8 @@ public class JUnitMetaResult implements IMetaResult {
         if (skipped.getMessage() != null && !skipped.getMessage().isEmpty()) {
             if (result.getErrorMessage() == null || result.getErrorMessage().isEmpty()) {
                 result.setErrorMessage(skipped.getMessage());
-            } else {
+            }
+            else {
                 result.addProperty(new NameValuePair("skippedMessage", skipped.getMessage()));
             }
         }
@@ -208,12 +222,11 @@ public class JUnitMetaResult implements IMetaResult {
      */
     protected void setUniqueName(AutomationResult result, UniqueNameTracker uniqueNameTracker) {
         if (result.getUniqueName() == null || result.getUniqueName().isEmpty()) {
-            String suiteHost = JUnitUtils.getStringValueIfValid(this.testSuite::getHostname);
             String suiteName = JUnitUtils.getStringValueIfValid(this.testSuite::getName);
             String className = JUnitUtils.getStringValueIfValid(this.testCase::getClassName);
             String testName = JUnitUtils.getStringValueIfValid(this.testCase::getName);
 
-            result.setUniqueName(String.format("%s:%s:%s:%s", suiteHost, suiteName, className, testName));
+            result.setUniqueName(String.format("%s:%s:%s", suiteName, className, testName));
         }
 
         // We need to call into the unique name tracker no matter what, so we can ensure names are actually unique across all automation results.
