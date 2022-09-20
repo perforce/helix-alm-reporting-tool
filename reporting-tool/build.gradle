@@ -26,11 +26,15 @@ plugins {
     id 'idea'
     id 'eclipse'
     id 'maven-publish'
+    id 'signing'
 }
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 allprojects {
     apply plugin: "com.jfrog.artifactory"
     group = "com.perforce.halm"
+    archivesBaseName = rootProject.name
     version = currentVersion
 }
 
@@ -53,7 +57,7 @@ dependencies {
 
     // JAX-B dependencies for JDK 9+
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
-    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.6"
 
     // Annotation Processors
     annotationProcessor 'info.picocli:picocli-codegen:4.6.2'
@@ -83,6 +87,21 @@ jar {
     }
 }
 
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+
+    useInMemoryPgpKeys(signingKey, signingPassword)
+
+    sign configurations.archives
+}
+
 javadoc {
     exclude('.MySCMServerInfo')
 }
@@ -97,7 +116,7 @@ distZip {
 
 eclipse {
     classpath {
-        downloadSources=true
+        downloadSources = true
         downloadJavadoc = true
     }
 }
