@@ -44,7 +44,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'info.picocli:picocli:4.6.3'
-    implementation 'com.perforce.halm.rest:halm-rest-client:1.2.1'
+    implementation 'com.perforce.halm.rest:halm-rest-client:1.2.2'
     implementation 'org.apache.commons:commons-text:1.9'
 
     // JAX-B dependencies for JDK 9+
