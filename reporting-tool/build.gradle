@@ -6,20 +6,6 @@
  * User Manual available at https://docs.gradle.org/7.3.3/userguide/building_java_projects.html
  */
 
-buildscript {
-    repositories {
-        maven {
-            url 'http://mvnartifactory.das.perforce.com:8081/artifactory/PerforceMavenCombined'
-            allowInsecureProtocol true
-        }
-
-    }
-    dependencies {
-        //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
-    }
-}
-
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
@@ -31,19 +17,25 @@ plugins {
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
+ext.projectName = rootProject.name
+ext.projectGroup = "com.perforce.halm"
+ext.projectDescription = "Helix ALM Automation Build reporting tool"
+ext.projectVersion = currentVersion
+ext.projectURL = 'https://github.com/perforce/helix-alm-reporting-tool'
+ext.projectSCM = 'scm:git:git://github.com/perforce/helix-alm-reporting-tool.git'
+ext.projectLicense = 'https://github.com/perforce/helix-alm-reporting-tool/blob/master/LICENSE.txt'
+ext.developerID = 'vincenpt'
+ext.developerName = 'Paul Vincent'
+ext.developerEmail = 'pvincent@perforce.com'
+
 allprojects {
-    apply plugin: "com.jfrog.artifactory"
     group = "com.perforce.halm"
     archivesBaseName = rootProject.name
     version = currentVersion
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
-    maven {
-        url "http://mvnartifactory.das.perforce.com:8081/artifactory/PerforceMavenCombined"
-        allowInsecureProtocol true
-    }
+    mavenCentral()
 }
 
 dependencies {
@@ -52,7 +44,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'info.picocli:picocli:4.6.3'
-    implementation 'com.perforce.halm.rest:halm-rest-client:1.2.0'
+    implementation 'com.perforce.halm.rest:halm-rest-client:1.2.1'
     implementation 'org.apache.commons:commons-text:1.9'
 
     // JAX-B dependencies for JDK 9+
@@ -87,6 +79,26 @@ jar {
     }
 }
 
+javadoc {
+    exclude('.MySCMServerInfo')
+}
+
+javadocJar {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+sourcesJar {
+    exclude('.MySCMServerInfo')
+
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+distZip {
+    exclude('.MySCMServerInfo')
+}
+
 artifacts {
     archives javadocJar, sourcesJar
 }
@@ -100,19 +112,9 @@ signing {
     useInMemoryPgpKeys(signingKey, signingPassword)
 
     sign configurations.archives
+    sign publishing.publications
 }
 
-javadoc {
-    exclude('.MySCMServerInfo')
-}
-
-sourcesJar {
-    exclude('.MySCMServerInfo')
-}
-
-distZip {
-    exclude('.MySCMServerInfo')
-}
 
 eclipse {
     classpath {
@@ -138,28 +140,63 @@ tasks.named('test') {
 }
 
 publishing {
+    repositories {
+        if (isReleaseVersion) {
+            // Only try to publish to the release staging if this is a release build
+            maven {
+                name = "ossrh"
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = findProperty('ossrhUsername')
+                    password = findProperty('ossrhPassword')
+                }
+            }
+
+        } else {
+            // Only try to publish to 'snapshots' if this IS a snapshot build.
+            maven {
+                name = "ossrhSnapshot"
+                url = "https://oss.sonatype.org/content/repositories/snapshots/"
+                credentials {
+                    username = findProperty('ossrhUsername')
+                    password = findProperty('ossrhPassword')
+                }
+            }
+        }
+    }
+
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            pom {
+                name = projectName
+                artifactId = projectName
+                packaging = 'jar'
+                description = projectDescription
+                url = projectURL
+
+                scm {
+                    connection = projectSCM
+                    developerConnection = projectSCM
+                    url = projectURL
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT Licence'
+                        url = projectLicense
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = developerID
+                        name = developerName
+                        email = developerEmail
+                    }
+                }
+            }
         }
     }
-}
-
-artifactory {
-    contextUrl = "http://mvnartifactory.das.perforce.com:8081/artifactory"    //The base Artifactory URL if not overridden by the publisher/resolver
-
-    publish {
-        repository {
-            repoKey = 'PerforceMavenCombined'
-            username = artifactoryUsername
-            password = artifactoryPassword
-            maven = true
-        }
-        defaults {
-            publications ('mavenJava')
-        }
-    }
-
-    clientConfig.info.setBuildName('reporting-tool')
-    clientConfig.info.setBuildNumber(java.time.Instant.now().getEpochSecond().toString())
 }
