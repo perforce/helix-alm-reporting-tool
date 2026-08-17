@@ -19,14 +19,14 @@ ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 ext.projectName = rootProject.name
 ext.projectGroup = "com.perforce.halm"
-ext.projectDescription = "Helix ALM Automation Build reporting tool"
+ext.projectDescription = "Perforce ALM Automation Build reporting tool"
 ext.projectVersion = currentVersion
 ext.projectURL = 'https://github.com/perforce/helix-alm-reporting-tool'
 ext.projectSCM = 'scm:git:git://github.com/perforce/helix-alm-reporting-tool.git'
 ext.projectLicense = 'https://github.com/perforce/helix-alm-reporting-tool/blob/master/LICENSE.txt'
-ext.developerID = 'vincenpt'
-ext.developerName = 'Paul Vincent'
-ext.developerEmail = 'pvincent@perforce.com'
+ext.developerID = 'callen'
+ext.developerName = 'Corey Allen'
+ext.developerEmail = 'callen@perforce.com'
 
 allprojects {
     group = "com.perforce.halm"
@@ -45,7 +45,6 @@ dependencies {
     // This dependency is used by the application.
     implementation 'info.picocli:picocli:4.7.5'
     implementation 'com.perforce.halm.rest:halm-rest-client:1.2.4'
-    implementation 'org.apache.commons:commons-text:1.11.0'
 
     // JAX-B dependencies for JDK 9+
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
@@ -74,7 +73,7 @@ jar {
     exclude('.MySCMServerInfo')
 
     manifest {
-        attributes 'Implementation-Title': 'Helix ALM Reporting Tool',
+        attributes 'Implementation-Title': 'Perforce ALM Reporting Tool',
                    'Implementation-Version': currentVersion
     }
 }

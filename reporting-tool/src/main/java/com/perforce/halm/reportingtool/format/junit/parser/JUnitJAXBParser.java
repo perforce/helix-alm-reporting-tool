@@ -55,7 +55,7 @@ public class JUnitJAXBParser {
 
     /**
      * Function that processes the specified report files.
-     * Returns JUnit testsuite objects that can be converted into a Helix ALM automation build object.
+     * Returns JUnit testsuite objects that can be converted into a Perforce ALM automation build object.
      *
      * @return See description
      * @throws JAXBException Thrown when we encounter a JAXB parser exception
@@ -84,41 +84,4 @@ public class JUnitJAXBParser {
         }
         return testSuites;
     }
-
-    /**
-     * Takes the report file, reads in the content, and escapes any content added to system-out or system-err XML tags.
-     *
-     * @param reportFile The file to read and escape
-     * @return See description
-     * @throws IOException If an IO exception occurred
-     */
-    /* We are not actually using the system-out/system-err values, so we don't want waste time doing this for performance reasons.
-    private static InputStream getEscapedFileStream(final String reportFile) throws IOException {
-        String fileContents = FileUtils.readFileToString(new File(reportFile), Charset.defaultCharset());
-        fileContents = escapeTagContentsInString(fileContents, "system-out");
-        fileContents = escapeTagContentsInString(fileContents, "system-err");
-        return new ByteArrayInputStream(fileContents.getBytes());
-    }
-    */
-
-    /**
-     * Function that can be used to generically escape the content between the specified tags.
-     * Note that this will only work if the specified tag does NOT contain any attributes.
-     *
-     * @param input The input string to search
-     * @param tagName The tag to search for
-     * @return See description
-     */
-    /* We are not actually using the system-out/system-err values, so we don't want waste time doing this for performance reasons.
-    private static String escapeTagContentsInString(String input, String tagName) {
-        String startTag = "<" + tagName + ">";
-        int indexStart = input.indexOf(startTag);
-        int indexEnd = input.indexOf("</" + tagName + ">");
-        if (indexStart >= 0 && indexEnd >= 0) {
-            int indexAfterStartTag = indexStart + startTag.length();
-            return input.substring(0, indexAfterStartTag) + StringEscapeUtils.escapeXml10(input.substring(indexAfterStartTag, indexEnd)) + input.substring(indexEnd);
-        }
-        return input;
-    }
-    */
 }
