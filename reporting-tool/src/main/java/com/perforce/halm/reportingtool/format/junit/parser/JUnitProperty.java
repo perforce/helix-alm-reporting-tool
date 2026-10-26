@@ -26,7 +26,7 @@
 
 package com.perforce.halm.reportingtool.format.junit.parser;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 /**
  * Object representing a JUnit property XML element

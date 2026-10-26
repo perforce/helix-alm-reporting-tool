@@ -34,7 +34,7 @@ import com.perforce.halm.rest.types.automation.build.AutomationBuild;
 import com.perforce.halm.rest.types.automation.jenkins.*;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

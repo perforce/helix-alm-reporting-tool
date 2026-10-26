@@ -29,9 +29,9 @@ package com.perforce.halm.reportingtool.format.junit;
 import com.perforce.halm.reportingtool.format.junit.parser.ObjectFactory;
 import com.perforce.halm.rest.types.NameValuePair;
 
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +63,7 @@ public final class JUnitUtils {
     }
 
     /**
-     * If a standard JUnit attribute is unmappable to one of our Helix ALM object fields, and we want to add it to properties
+     * If a standard JUnit attribute is unmappable to one of our Perforce ALM object fields, and we want to add it to properties
      * if it exists; this function will check to see if the attribute is set, and if so will add it to the properties array.
      *
      * @param attributeName The attribute name

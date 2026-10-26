@@ -26,9 +26,9 @@
 
 package com.perforce.halm.reportingtool.format.junit.parser;
 
-import javax.xml.bind.annotation.XmlAnyAttribute;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlAnyAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
